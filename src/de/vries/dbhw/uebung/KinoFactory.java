@@ -1,11 +1,10 @@
 package de.vries.dbhw.uebung;
 
+import java.io.IOException;
+
 public class KinoFactory {
-    public static Kino getKino(){
-        String[] daten = {"Dr. Schiwago---300", "Ghostbusters---104", "Charade---99", "Toy Story---99", "Jenseits von Afrika---238", "Die tönende Wochenschau---15"};
-
-        KinoDateiUtil factory = new KinoDateiUtil(daten);
-
+    public static Kino getKino() throws IOException {
+        KinoDateiUtil factory = new KinoDateiUtil();
         return  factory.loadKino();
     }
 }

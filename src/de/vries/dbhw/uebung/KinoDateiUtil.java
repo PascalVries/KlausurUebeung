@@ -1,34 +1,43 @@
 package de.vries.dbhw.uebung;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class KinoDateiUtil {
-    private String[] daten;
 
-    public KinoDateiUtil(String[] daten){
-        this.daten = daten;
-    }
 
-    public Kino loadKino(){
+    public Kino loadKino() throws IOException {
         Kino kino = new Kino();
         Pattern p = Pattern.compile("(.+)---([0-9]+)");
-        for (String filmString:daten) {
+        Path path = Paths.get("daten.txt");
+        System.out.println(path);
+        List<String> content = Files.readAllLines(path);
+        for (String filmString:content) {
             Matcher m = p.matcher(filmString);
             m.matches();
-            String Titel = m.group(1);
-            int Dauer = Integer.parseInt(m.group(2));
-            kino.addFilm(new Film(Dauer,Titel));
+            String titel = m.group(1);
+            int dauer = Integer.parseInt(m.group(2));
+            kino.addFilm(new Film(dauer,titel));
         }
         return kino;
     }
 
     public static void saveKino(Kino kino){
         List<Film> filme = kino.getFilmNachLaenge();
+        Film kurz = kino.getKuerzesterFilm();
+        Film lang = kino.getLaengsterFilm();
+        String filmLine = "%25s %1s %5s\n";
         for (Film film:filme) {
-            String filmLine = "%25s %1s %5s\n";
             System.out.printf(filmLine, film.getTitel() , " : " , film.getZeit());
         }
+        System.out.println("Informationen");
+        System.out.println("Längste Spieldauer  : " + lang.getTitel() +" (" + lang.getZeit()+")");
+        System.out.println("Kürzeste Spieldauer : " + kurz.getTitel() +" (" + kurz.getZeit()+")");
+        System.out.println("Durchschnittliche Spieldauer : " + kino.getDurchschnittlicheDauer());
     }
 }
