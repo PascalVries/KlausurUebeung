@@ -15,7 +15,6 @@ public class KinoDateiUtil {
         Kino kino = new Kino();
         Pattern p = Pattern.compile("(.+)---([0-9]+)");
         Path path = Paths.get("daten.txt");
-        System.out.println(path);
         List<String> content = Files.readAllLines(path);
         for (String filmString:content) {
             Matcher m = p.matcher(filmString);
